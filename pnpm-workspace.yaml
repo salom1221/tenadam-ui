@@ -2,6 +2,8 @@ packages:
   - "."
   - "backend"
 
+minimumReleaseAge: 0
+
 allowBuilds:
   '@prisma/client': true
   '@prisma/engines': true
