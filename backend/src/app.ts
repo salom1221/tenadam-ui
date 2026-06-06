@@ -16,7 +16,7 @@ import { errorHandler } from "./lib/http.js";
 
 export function createApp() {
   const app = express();
-  const frontendUrl = process.env.FRONTEND_URL ?? "http://localhost:3000";
+  const frontendUrl = (process.env.FRONTEND_URL ?? "http://localhost:3000").replace(/\/$/, "");
 
   app.use(helmet());
   app.use(cors({ origin: frontendUrl, credentials: true }));

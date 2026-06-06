@@ -114,7 +114,7 @@ export type DashboardResponse = {
   } | null;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://tenadam-ui-10.onrender.com";
+const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "https://tenadam-ui-10.onrender.com").replace(/\/$/, "");
 const TOKEN_KEY = "tenadam_auth_token";
 
 export function saveAuthToken(token: string) {
