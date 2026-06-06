@@ -16,10 +16,31 @@ import { errorHandler } from "./lib/http.js";
 
 export function createApp() {
   const app = express();
-  const frontendUrl = (process.env.FRONTEND_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.FRONTEND_URLS,
+    "http://localhost:3000",
+    "https://tenadam-ui-backend-tgfz.vercel.app",
+  ]
+    .filter(Boolean)
+    .flatMap((origin) => origin!.split(","))
+    .map((origin) => origin.trim().replace(/\/$/, ""))
+    .filter(Boolean);
 
   app.use(helmet());
-  app.use(cors({ origin: frontendUrl, credentials: true }));
+  app.use(
+    cors({
+      origin(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error(`Origin ${origin} is not allowed by CORS`));
+      },
+      credentials: true,
+    }),
+  );
   app.use(express.json());
   app.use(morgan("dev"));
 
